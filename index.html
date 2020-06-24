@@ -25,6 +25,7 @@
 
     playerSelection = playerInput;
     computerSelection = computerPlay();
+
     if (playerSelection == 'rock' && computerSelection == 'paper' || playerSelection == 'paper' && computerSelection == 'scissors' || playerSelection == 'scissors' && computerSelection == 'rock') {
       computerScore++;
       return `You lost this round! ${computerSelection} beats ${playerSelection}! You have a score of ${playerScore} and your opponent has a score of ${computerScore}.`;
