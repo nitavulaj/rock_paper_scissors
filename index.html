@@ -4,15 +4,61 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <link rel="stylesheet" href="/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>Rock Paper Scissors Game</title>
 </head>
 <body>
+  <div class="game-container">
+    <div class="game-wrap">
+  <h1>Rock Paper Scissors</h1>
+  <h2>Pick an option to play!</h2>
+  <div id="playButtons">
+  <button id="rockBtn">Rock</button>
+  <button id="paperBtn">Paper</button>
+  <button id="scissorsBtn">Scissors</button>
+  </div>
 
+  <div id="resetContainer"></div>
+
+  <div class="roundScore">
+    <p class="roundResults"></p>
+  </div>
+  <div class="keepScore">
+    <div class="playerTitle">
+      <h3>Player Score</h3>
+      <p class="playerScore">0</p>
+    </div>
+    <div class="computerTitle">
+      <h3>CPU Score</h3>
+      <p class="computerScore">0</p>
+    </div>
+  </div>
+
+  <div class="gameWinner">
+    <p class="winnerContent"></p>
+  </div>
+  </div>
+
+  <footer>This project is part of <a href="https://www.theodinproject.com/lessons/rock-paper-scissors">The Odin Project</a></footer>
+</div>
 <script>
+
+const rockBtn = document.querySelector('#rockBtn');
+const paperBtn = document.querySelector('#paperBtn');
+const scissorsBtn = document.querySelector('#scissorsBtn');
+const resetContainer = document.querySelector('#resetContainer');
+const resetBtn = document.createElement("button");
+
   let playerScore = 0;
   let computerScore = 0;
+  let ps = document.querySelector('.playerScore');
+  let cs = document.querySelector('.computerScore');
   let playerInput;
   let computerInput;
+  let roundResults = document.querySelector('.roundResults');
+  let winnerContent = document.querySelector('.winnerContent');
+
 
 
   function computerPlay() {
@@ -23,35 +69,78 @@
 
   function playRound(playerSelection, computerSelection) {
 
-    playerSelection = playerInput;
     computerSelection = computerPlay();
 
     if (playerSelection == 'rock' && computerSelection == 'paper' || playerSelection == 'paper' && computerSelection == 'scissors' || playerSelection == 'scissors' && computerSelection == 'rock') {
       computerScore++;
-      return `You lost this round! ${computerSelection} beats ${playerSelection}! You have a score of ${playerScore} and your opponent has a score of ${computerScore}.`;
-      } else if (playerSelection == 'paper' && computerSelection == 'rock' || playerSelection == 'scissors' && computerSelection == 'paper' || playerSelection == 'rock' && computerSelection == 'scissors') {
-        playerScore++;
-      return `You win this round! ${playerSelection} beats ${computerSelection}! You have a score of ${playerScore} and your opponent has a score of ${computerScore}.`;
+      cs.textContent = computerScore;
+      roundResults.textContent = `You lost this round, ${computerSelection} beats ${playerSelection}!`;
+
+    } else if (playerSelection == 'paper' && computerSelection == 'rock' || playerSelection == 'scissors' && computerSelection == 'paper' || playerSelection == 'rock' && computerSelection == 'scissors') {
+      playerScore++;
+      ps.textContent = playerScore;
+      roundResults.textContent = `You win this round, ${playerSelection} beats ${computerSelection}!`;
+
+
       } else  if (playerSelection == computerSelection) {
-        return `It's a tie!`;
+        roundResults.textContent = `It's a tie!`;
       }
+
+    checkGameWinner();
   }
 
-function game() {
-  for (var i = 0; i < 5; i++) {
-    playerInput = window.prompt('Rock, paper, or scissors?').toLowerCase();
-    computerInput = computerPlay();
-    console.log(playRound());
-  }
+rockBtn.addEventListener('click', function () {
+let playerSelection = 'rock';
+let computerSelection = computerPlay();
+playRound(playerSelection, computerSelection);
 
-  if (playerScore > computerScore) {
-    return `You won with a total score of ${playerScore}, while your opponent only had a score of ${computerScore}. `;
-  } else if (playerScore < computerScore) {
-    return `You lost with a total score of ${playerScore}, while your opponent scored ${computerScore}.`;
-  } else {
-    return `You both tied with a score of ${playerScore}.`
-  }
+});
+
+paperBtn.addEventListener('click', function () {
+let playerSelection = 'paper';
+let computerSelection = computerPlay();
+playRound(playerSelection, computerSelection);
+
+});
+
+scissorsBtn.addEventListener('click', function () {
+let playerSelection = 'scissors';
+let computerSelection = computerPlay();
+playRound(playerSelection, computerSelection);
+
+});
+
+
+function checkGameWinner () {
+ if (playerScore === 5) {
+   winnerContent.textContent = 'You win the game!';
+   winnerContent.style.cssText = 'color: green';
+   roundResults.textContent = '';
+   removePlayBtns();
+ } else if (computerScore === 5) {
+   winnerContent.textContent = 'You lost the game!';
+   winnerContent.style.cssText = 'color: red';
+   roundResults.textContent = '';
+   removePlayBtns();
+ }
 }
+
+resetBtn.addEventListener('click', function() {
+  location.reload();
+  resetBtn.style.display = 'none';
+})
+
+function removePlayBtns() {
+  document.getElementById('playButtons').removeChild(rockBtn);
+  document.getElementById('playButtons').removeChild(paperBtn);
+  document.getElementById('playButtons').removeChild(scissorsBtn);
+  resetBtn.innerHTML = 'Play Again';
+  resetContainer.appendChild(resetBtn);
+  resetContainer.style = 'text-align: center';
+}
+
+
+
 </script>
 </body>
 </html>
